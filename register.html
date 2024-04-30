@@ -25,19 +25,25 @@
             <label for="password" class="sr-only">Contraseña</label>
             <input id="password" v-model="password" name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Contraseña">
           </div>
+          <div>
+            <label for="cpassword" class="sr-only">Contraseña</label>
+            <input id="cpassword" name="cpassword" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Confirmar contraseña">
+          </div>
         </div>
 
-        <div class="flex items-center justify-between">
-          <div class="flex items-center">
-            <input id="remember_me" name="remember_me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-            <label for="remember_me" class="ml-2 block text-sm text-gray-900">¿Recordarme?</label>
+        <div class="px-6 py-4">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-2">Información de Pago</h2>
+          <div class="mt-2">
+            <label for="cardNumber" class="block text-sm font-medium text-gray-700">Número de Tarjeta</label>
+            <input v-model="cardNumber" type="text" name="cardNumber" id="cardNumber" class="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Número de Tarjeta">
           </div>
-
-          <div class="text-sm">
-            <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">Olvide mi contraseña</a>
+          <div class="mt-4">
+            <label for="expirationDate" class="block text-sm font-medium text-gray-700">Fecha de Expiración</label>
+            <input v-model="expirationDate" type="text" name="expirationDate" id="expirationDate" class="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="MM/YY">
           </div>
-          <div class="text-sm">
-            <a href="register.html" class="font-medium text-green-600 hover:text-green-500">Registrarme</a>
+          <div class="mt-4">
+            <label for="cvv" class="block text-sm font-medium text-gray-700">CVV</label>
+            <input v-model="cvv" type="text" name="cvv" id="cvv" class="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="CVV">
           </div>
         </div>
 
@@ -60,7 +66,7 @@
         login() {
           localStorage.setItem('email', this.email);
           localStorage.setItem('password', this.password);
-          window.location.href = 'home.html';
+          window.location.href = 'index.html';
         }
       }
     });
