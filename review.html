@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyecto Streaming</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <!-- Include Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+  <div id="app" class="container min-h-screen flex flex-col items-center justify-center mx-auto py-8">
+      <h2 class="text-3xl font-extrabold text-gray-900">Califica la pelicula</h2>
+      <div class="mt-8">
+        <div class="flex flex-col items-center justify-between">
+          <h3 class="text-xl font-semibold text-gray-900">{{ title }}</h3>
+          <div class="flex items-center">
+            <span class="mr-2 text-lg font-semibold text-gray-900">Tu calificación: </span>
+            <div class="flex items-center">
+              <!-- Star icons for rating -->
+              <template v-for="i in 5">
+                <span v-if="i <= rating" @mouseover="selectRating(i)">&#9733;</span>
+                <span v-else @mouseover="selectRating(i)">&#9734;</span>
+              </template>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4">
+          <textarea
+            v-model="review"
+            class="w-full h-32 border border-gray-300 rounded-md px-3 py-2 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm resize-none"
+            placeholder="Escribe tu reseña"
+          ></textarea>
+        </div>
+        <div class="mt-6">
+          <button
+            @click="submitreview"
+            class="inline-flex items-center justify-center w-full px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >Guardar</button>
+        </div>
+      </div>
+  </div>
+
+  <script>
+    // Vue.js code
+    new Vue({
+      el: '#app',
+      data: {
+        rating: 0,
+        title: ''
+      },
+      methods: {
+        selectRating(number) {
+          this.rating = number;
+        },
+        submitreview() {
+          window.location.href = '/home.html';
+        }
+      },
+      mounted: function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        this.title = urlParams.get('title');
+      },
+    });
+  </script>
+</body>
+</html>

@@ -9,35 +9,39 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-  <div id="app" class="container mx-auto py-8">
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-      <!-- Sidebar with categories -->
-      <div class="lg:col-span-1">
-        <h2 class="text-lg font-semibold mb-4">Categories</h2>
-        <ul>
-          <li v-for="(category, index) in categories" :key="index" class="mb-2">
-            <button class="text-blue-500" @click="selectCategory(category)">{{ category }}</button>
-          </li>
-        </ul>
+  <div id="app" class="container min-h-screen flex items-center justify-center mx-auto py-8">
+    <div class="max-w-md w-full space-y-8">
+      <div>
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Iniciar Sesión</h2>
       </div>
-      <!-- Main content area -->
-      <div class="lg:col-span-3">
-        <!-- Search bar -->
-        <div class="mb-4">
-          <input type="text" v-model="searchQuery" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500" placeholder="Search videos...">
-        </div>
-        <!-- Video cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="bg-white rounded-lg shadow-md p-6" v-for="(video, index) in filteredVideos" :key="index">
-            <!-- Display picture -->
-            <img :src="getThumbnail(video)" alt="Thumbnail" class="w-full h-32 object-cover mb-4">
-
-            <h2 class="text-xl font-semibold mb-2">{{ video.title }}</h2>
-            <p class="text-gray-600">{{ video.description }}</p>
-            <!-- You can add more details like duration, etc. -->
+      <form class="mt-8 space-y-6" @submit.prevent="login">
+        <input type="hidden" name="remember" value="true">
+        <div class="rounded-md shadow-sm -space-y-px">
+          <div>
+            <label for="email-address" class="sr-only">e-mail</label>
+            <input id="email-address" v-model="email" name="email" type="email" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Dirección de Correo Electrónico">
+          </div>
+          <div>
+            <label for="password" class="sr-only">Contraseña</label>
+            <input id="password" v-model="password" name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Contraseña">
           </div>
         </div>
-      </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <input id="remember_me" name="remember_me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+            <label for="remember_me" class="ml-2 block text-sm text-gray-900">¿Recordarme?</label>
+          </div>
+
+          <div class="text-sm">
+            <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">Olvide mi contraseña</a>
+          </div>
+        </div>
+
+        <div>
+          <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Iniciar Sesión</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -46,33 +50,14 @@
     new Vue({
       el: '#app',
       data: {
-        videos: [
-          { title: 'The Godfather', description: 'Don Vito Corleone, jefe de una familia mafiosa, decide ceder su imperio a su hijo menor, Michael. Sin embargo, su decisión pone involuntariamente en grave peligro la vida de sus seres queridos.', category: 'Crimen', thumbnail: 'https://images.mubicdn.net/images/film/488/cache-47680-1543371300/image-w1280.jpg?size=400x' },
-          { title: 'The Green Ray', description: 'Delphine es una joven secretaria parisina sin planes para sus vacaciones después de que su amiga las cancelara en el último minuto. Sola y triste, está decidida a viajar.', category: 'Romance', thumbnail: 'https://images.mubicdn.net/images/film/1500/cache-8884-1601919643/image-w1280.jpg?size=400x' },
-          { title: 'A German Youth', description: 'A finales de los años 60, la generación de la posguerra comenzó a rebelarse contra sus padres. Se trataba de una generación desilusionada tanto por el capitalismo anticomunista como por un aparato estatal: en este último, ellos mismos veían tendencias fascistas.', category: 'Documental', thumbnail: 'https://images.mubicdn.net/images/film/120282/cache-105535-1544083202/image-w1280.jpg?size=400x' },
-          // Add more video objects here
-        ],
-        categories: ['Crimen', 'Romance', 'Documental'], // List of categories
-        selectedCategory: null, // Selected category filter
-        searchQuery: '' // Search query string
-      },
-      computed: {
-        filteredVideos() {
-          // Filter videos based on selected category and search query
-          return this.videos.filter(video =>
-            (!this.selectedCategory || video.category === this.selectedCategory) &&
-            (!this.searchQuery || video.title.toLowerCase().includes(this.searchQuery.toLowerCase()))
-          );
-        }
+        email: '',
+        password: ''
       },
       methods: {
-        selectCategory(category) {
-          // Update selected category filter
-          this.selectedCategory = category === this.selectedCategory ? null : category;
-        },
-        getThumbnail(video) {
-          // Get the thumbnail for each video
-          return video.thumbnail;
+        login() {
+          localStorage.setItem('email', this.email);
+          localStorage.setItem('password', this.password);
+          window.location.href = '/home.html';
         }
       }
     });

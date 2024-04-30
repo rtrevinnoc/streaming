@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyecto Streaming</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <!-- Include Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+  <div id="app" class="container min-h-screen flex items-center justify-center mx-auto py-8">
+    <div class="max-w-lg w-full space-y-8">
+      <div>
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Configuración</h2>
+      </div>
+      <form class="mt-8 space-y-6" @submit.prevent="updateSettings">
+        <div class="rounded-md shadow-sm space-y-4">
+          <div>
+            <label for="username" class="sr-only">Nombre de Usuario</label>
+            <input id="username" v-model="username" name="username" type="text" autocomplete="username" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Nombre de Usuario">
+          </div>
+          <div>
+            <label for="email" class="sr-only">Correo Electrónico</label>
+            <input id="email" v-model="email" name="email" type="email" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Correo Electrónico">
+          </div>
+          <div>
+            <label for="password" class="sr-only">Contraseña</label>
+            <input id="password" v-model="password" name="password" type="password" autocomplete="new-password" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Nueva contraseña">
+          </div>
+          <div>
+            <label for="confirm-password" class="sr-only">Confirmar contraseña</label>
+            <input id="confirm-password" v-model="confirmPassword" name="confirm-password" type="password" autocomplete="new-password" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Confirmar contraseña">
+          </div>
+        </div>
+
+        <div>
+          <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Guardar cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Vue.js code
+    new Vue({
+      el: '#app',
+      data: {
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      },
+      methods: {
+        updateSettings() {
+          localStorage.setItem('email', this.email);
+          localStorage.setItem('password', this.password);
+        }
+      },
+      mounted: function() {
+        const email = localStorage.getItem('email');
+        if (email) {
+          this.email = email;
+          this.username = email.split("@")[0]
+        }
+
+        const password = localStorage.getItem('password');
+        if (password) {
+          this.password = password;
+        }
+      },
+    });
+  </script>
+</body>
+</html>

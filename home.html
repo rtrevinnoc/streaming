@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyecto Streaming</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <!-- Include Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+  <div id="app" class="container mx-auto py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <!-- Sidebar with categories -->
+      <div class="lg:col-span-1">
+        <h2 class="text-lg font-semibold mb-4"><a href="/settings.html">👤 {{ username }}</a></h2>
+        <h2 class="text-lg font-semibold mb-4">Categorias</h2>
+        <ul>
+          <li v-for="(category, index) in categories" :key="index" class="mb-2">
+            <button class="text-blue-500" @click="selectCategory(category)">{{ category }}</button>
+          </li>
+        </ul>
+      </div>
+      <!-- Main content area -->
+      <div class="lg:col-span-3">
+        <!-- Search bar -->
+        <div class="mb-4">
+          <input type="text" v-model="searchQuery" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500" placeholder="Buscar peliculas...">
+        </div>
+        <!-- Video cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-white rounded-lg shadow-md p-6" v-for="(video, index) in filteredVideos" :key="index">
+            <!-- Display picture -->
+            <img :src="getThumbnail(video)" alt="Miniatura" class="w-full h-32 object-cover mb-4">
+
+            <h2 class="text-xl font-semibold mb-2">{{ video.title }}</h2>
+            <p class="text-gray-600">{{ video.description }}</p>
+            <br>
+            <a :href="'/review.html?title=' + video.title">Calificar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        videos: [
+          { title: 'The Godfather', description: 'Don Vito Corleone, jefe de una familia mafiosa, decide ceder su imperio a su hijo menor, Michael. Sin embargo, su decisión pone involuntariamente en grave peligro la vida de sus seres queridos.', category: 'Crimen', thumbnail: 'https://images.mubicdn.net/images/film/488/cache-47680-1543371300/image-w1280.jpg?size=400x' },
+          { title: 'The Green Ray', description: 'Delphine es una joven secretaria parisina sin planes para sus vacaciones después de que su amiga las cancelara en el último minuto. Sola y triste, está decidida a viajar.', category: 'Romance', thumbnail: 'https://images.mubicdn.net/images/film/1500/cache-8884-1601919643/image-w1280.jpg?size=400x' },
+          { title: 'A German Youth', description: 'A finales de los años 60, la generación de la posguerra comenzó a rebelarse contra sus padres. Se trataba de una generación desilusionada tanto por el capitalismo anticomunista como por un aparato estatal: en este último, ellos mismos veían tendencias fascistas.', category: 'Documental', thumbnail: 'https://images.mubicdn.net/images/film/120282/cache-105535-1544083202/image-w1280.jpg?size=400x' },
+        ],
+        categories: ['Crimen', 'Romance', 'Documental'],
+        selectedCategory: null,
+        searchQuery: '',
+        email: '',
+        username: '',
+        password: '',
+      },
+      computed: {
+        filteredVideos() {
+          return this.videos.filter(video =>
+            (!this.selectedCategory || video.category === this.selectedCategory) &&
+            (!this.searchQuery || video.title.toLowerCase().includes(this.searchQuery.toLowerCase()))
+          );
+        }
+      },
+      methods: {
+        selectCategory(category) {
+          this.selectedCategory = category === this.selectedCategory ? null : category;
+        },
+        getThumbnail(video) {
+          return video.thumbnail;
+        }
+      },
+      mounted: function() {
+        const email = localStorage.getItem('email');
+        if (email) {
+          this.email = email;
+          this.username = email.split("@")[0]
+        }
+
+        const password = localStorage.getItem('password');
+        if (password) {
+          this.password = password;
+        }
+      },
+    });
+  </script>
+</body>
+</html>
